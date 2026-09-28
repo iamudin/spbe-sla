@@ -59,12 +59,11 @@ class DashboardController extends Controller
 
             if ($domain) {
                 \Leazycms\Web\Models\Option::updateOrCreate(
-                    ['name' => 'spbe-sla-domain', 'tenant_id' => tenant() ? tenant()->id : null],
+                    ['name' => 'spbe-sla-domain'],
                     ['value' => $domain, 'autoload' => 1]
                 );
             } else {
                 \Leazycms\Web\Models\Option::where('name', 'spbe-sla-domain')
-                    ->where('tenant_id', tenant() ? tenant()->id : null)
                     ->delete();
             }
 
