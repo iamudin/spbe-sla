@@ -78,6 +78,7 @@ class UnitKerjaController extends Controller
         if ($request->filled('new_user_email') && $request->filled('new_user_password')) {
             $user = \App\Models\Plugins\SpbeSla\User::create([
                 'name' => $data['new_user_name'],
+                'slug' => str($data['new_user_name'])->slug(),
                 'username' => $data['new_user_username'] ?? explode('@', $data['new_user_email'])[0],
                 'email' => $data['new_user_email'],
                 'password' => \Illuminate\Support\Facades\Hash::make($data['new_user_password']),

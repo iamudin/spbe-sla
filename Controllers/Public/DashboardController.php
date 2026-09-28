@@ -28,21 +28,22 @@ class DashboardController extends Controller implements HasMiddleware
 
     public function index()
     {
+        plugin_page_name('SPBE SLA Dashboard');
         $user = $this->getSessionUser();
         if (!$user)
             return redirect(plugin_route('spbe-sla.public.login'));
 
         $unitKerja = $user->unitKerja;
         $digitalServices = $unitKerja ? $unitKerja->digitalServices : collect();
-        
+
         $appDevelopments = collect();
         if ($unitKerja) {
-            $appDevelopments = \App\Models\Plugins\SpbeSla\AppDevelopment::whereHas('digitalService', function($q) use ($unitKerja) {
+            $appDevelopments = \App\Models\Plugins\SpbeSla\AppDevelopment::whereHas('digitalService', function ($q) use ($unitKerja) {
                 $q->where('unit_kerja_id', $unitKerja->id);
             })
-            ->where('progress_percentage', '<', 100)
-            ->with('digitalService', 'ticket')
-            ->orderBy('created_at', 'desc')->get();
+                ->where('progress_percentage', '<', 100)
+                ->with('digitalService', 'ticket')
+                ->orderBy('created_at', 'desc')->get();
         }
 
         $tickets = Ticket::where('user_id', $user->id)
@@ -109,13 +110,13 @@ class DashboardController extends Controller implements HasMiddleware
         $user = $this->getSessionUser();
         if (!$user)
             return redirect(plugin_route('spbe-sla.public.login'));
-            
+
         // Check if user is authorized to view this ticket (belongs to them or their unit)
         $unitKerjaId = $user->unitKerja->id ?? null;
         if ($ticket->user_id !== $user->id && ($ticket->digitalService->unit_kerja_id ?? null) !== $unitKerjaId) {
             return redirect(plugin_route('spbe-sla.public.dashboard'))->withErrors(['error' => 'Unauthorized access.']);
         }
-        
+        plugin_page_name($ticket->ticket_number . ' | ' . $ticket->title);
         $ticket->load('comments.user');
 
         return view('spbe-sla::public.tickets.show', compact('ticket', 'user'));
@@ -126,7 +127,7 @@ class DashboardController extends Controller implements HasMiddleware
         $user = $this->getSessionUser();
         if (!$user)
             return redirect(plugin_route('spbe-sla.public.login'));
-            
+
         // Check authorization
         $unitKerjaId = $user->unitKerja->id ?? null;
         if ($ticket->user_id !== $user->id && ($ticket->digitalService->unit_kerja_id ?? null) !== $unitKerjaId) {

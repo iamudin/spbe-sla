@@ -22,6 +22,7 @@ class AuthController extends Controller implements HasMiddleware
         if (session()->has('spbe_sla_user_id')) {
             return redirect(plugin_route('spbe-sla.public.dashboard'));
         }
+        plugin_page_name('Login');
         return view('spbe-sla::public.login');
     }
 
