@@ -1,6 +1,6 @@
 {
   "title": "SPBE SLA & Ticketing Dashboard",
   "description": "Sistem Monitoring Service Level Agreement (SLA) & Ticketing berbasis PermenPANRB No. 19.",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "name": "spbe-sla"
 }
