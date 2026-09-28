@@ -22,7 +22,7 @@ return new class extends Migration
         if (Schema::hasTable('users')) {
             Schema::table('users', function (Blueprint $table) {
                 if (!Schema::hasColumn('users', 'unit_kerja_id')) {
-                    $table->uuid('unit_kerja_id')->nullable()->after('tenant_id');
+                    $table->uuid('unit_kerja_id')->nullable();
                 }
             });
         }
